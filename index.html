@@ -29,6 +29,10 @@
           }
         })
 
+        if (diferenca > 0) {
+          throw new Error('Não é possível dar troco exato')
+        }
+
         return troco
       }
     </script>
@@ -81,7 +85,7 @@
 
       // Teste 6: Teste para verificar se é possível fornecer o troco com a quantidade de cédulas em estoque.
       test('Deve lançar erro quando não for possível dar o troco exato', (assert) => {
-        assert.throws(() => calcularTroco(10, 50, {100: 1, 50: 0, 20: 1, 10: 0, 5: 0, 2: 0, 1: 0}), /Não é possível dar troco exato/)
+        assert.throws(() => calcularTroco(10, 50, {100: 1, 50: 0, 20: 1, 10: 0, 5: 0, 2: 0, 1: 0}), 'Não é possível dar troco exato')
       })
 
     </script>
