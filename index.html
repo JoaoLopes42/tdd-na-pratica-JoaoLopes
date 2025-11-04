@@ -18,6 +18,10 @@
       function calcularTroco(preco, pago){
         var troco = []
 
+        if(preco != pago){
+          troco = [50, 20, 10, 5]
+        }
+
         return troco
       }
     </script>
