@@ -15,11 +15,11 @@
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-      // Teste 1: Deve retornar troco vazio quando o valor pago é igual ao preço
-      test('Deve retornar [] quando o valor pago é igual ao preço', (assert) => {
-        const resultado = calcularTroco(10,10)
-        assert.deepEqual(resultado, [])
-      })
+      function calcularTroco(preco, pago){
+        var troco = []
+
+        return troco
+      }
     </script>
 
     <script>
@@ -32,6 +32,12 @@
       test('Esse é como um teste falhando parece', (assert) => {
         const resultado = [1,2,3].indexOf(1)  // O valor de 'resultado' será 0 (zero)
         assert.equal(resultado, -1) // Nós esperamos que essa validação falhe
+      })
+
+      // Teste 1: Deve retornar troco vazio quando o valor pago é igual ao preço
+      test('Deve retornar [] quando o valor pago é igual ao preço', (assert) => {
+        const resultado = calcularTroco(10,10)
+        assert.deepEqual(resultado, [])
       })
     </script>
 
