@@ -22,8 +22,9 @@
 
         cedulasDisponiveis.forEach((cedula) => {
           // Continuar adicionando a cédula atual enquanto for maior que a diferença
-          while (diferenca >= cedula) {
+          while ((diferenca >= cedula) && (estoque[cedula] > 0)) {
             troco.push(cedula)
+            estoque[cedula] -= 1
             diferenca = diferenca - cedula
           }
         })
