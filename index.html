@@ -16,10 +16,21 @@
 
     <script>
       function calcularTroco(preco, pago){
+        const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1]
         var troco = []
 
+
         if(preco != pago){
-          troco = [50, 20, 10, 5]
+          var i = 0;
+          valor = pago - preco
+          while(valor > 0){
+            i = 0;
+            while((i < 6) && (valor < cedulasDisponiveis[i])){
+              i++;
+            }
+            valor -= cedulasDisponiveis[i]
+            troco.push(cedulasDisponiveis[i])
+          }
         }
 
         return troco
