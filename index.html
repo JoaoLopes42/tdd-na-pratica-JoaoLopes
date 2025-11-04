@@ -15,7 +15,26 @@
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-      // A sua solução será escrita aqui!
+      const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1]
+      function calcularTroco(precoDoProduto, valorPago, estoque) {
+        let diferenca = valorPago - precoDoProduto
+        let troco = []
+
+        cedulasDisponiveis.forEach((cedula) => {
+          // Continuar adicionando a cédula atual enquanto for maior que a diferença
+          while ((diferenca >= cedula) && (estoque[cedula] > 0)) {
+            troco.push(cedula)
+            estoque[cedula] -= 1
+            diferenca = diferenca - cedula
+          }
+        })
+
+        if (diferenca > 0) {
+          throw new Error('Não é possível dar troco exato')
+        }
+
+        return troco
+      }
     </script>
 
     <script>
@@ -29,6 +48,46 @@
         const resultado = [1,2,3].indexOf(1)  // O valor de 'resultado' será 0 (zero)
         assert.equal(resultado, -1) // Nós esperamos que essa validação falhe
       })
+
+      // Teste 1: Deve retornar troco vazio quando o valor pago é igual ao preço
+      test('Deve retornar [] quando o valor pago é igual ao preço', (assert) => {
+        const resultado = calcularTroco(10,10,{100:0, 50:0, 20:0, 10:0, 5:0, 2:0, 1:0})
+        assert.deepEqual(resultado, [])
+      })
+
+      // Teste 2: Primeiro calculo real de troco
+      test('calcularTroco(215, 300) deve retornar [50, 20, 10, 5]', (assert) => {
+        const trocoCalculado = calcularTroco(215, 300,{100:0, 50:1, 20:1, 10:1, 5:1, 2:0, 1:0}) // Esperado um array contendo [50, 20, 10, 5]
+        const trocoEsperado = [50, 20, 10, 5]
+        assert.deepEqual(trocoCalculado, trocoEsperado)
+      })
+
+      // Teste 3: Segundo calculo real de troco
+      test('calcularTroco(486, 600) deve retornar [100, 10, 2, 2]', (assert) => {
+        const trocoCalculado = calcularTroco(486, 600,{100:1, 50:0, 20:0, 10:1, 5:0, 2:2, 1:0})
+        const trocoEsperado = [100, 10, 2, 2]
+        assert.deepEqual(trocoCalculado, trocoEsperado)
+      })
+
+      // Teste 4: Terceiro calculo real de troco
+      test('calcularTroco(12, 200) deve retornar [100, 50, 20, 10, 5, 2, 1]', (assert) => {
+        const trocoCalculado = calcularTroco(12, 200,{100:1, 50:1, 20:1, 10:1, 5:1, 2:1, 1:1})
+        const trocoEsperado = [100, 50, 20, 10, 5, 2, 1]
+        assert.deepEqual(trocoCalculado, trocoEsperado)
+      })
+
+      // Teste 5: Quarto calculo real de troco testando do estoque de cédulas.
+      test('calcularTroco(120, 200) deve retornar [20, 20, 20, 20] pois não tem nenhuma nota de 50', (assert) => {
+        const trocoCalculado = calcularTroco(120, 200, {100: 1, 50: 0, 20: 5, 10: 10, 5: 0, 2: 0, 1: 0})
+        const trocoEsperado = [20, 20, 20, 20]
+        assert.deepEqual(trocoCalculado, trocoEsperado)
+      })
+
+      // Teste 6: Teste para verificar se é possível fornecer o troco com a quantidade de cédulas em estoque.
+      test('Deve lançar erro quando não for possível dar o troco exato', (assert) => {
+        assert.throws(() => calcularTroco(10, 50, {100: 1, 50: 0, 20: 1, 10: 0, 5: 0, 2: 0, 1: 0}), 'Não é possível dar troco exato')
+      })
+
     </script>
 
   </body>
