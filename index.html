@@ -16,7 +16,7 @@
 
     <script>
       const cedulasDisponiveis = [100, 50, 20, 10, 5, 2, 1]
-      function calcularTroco(precoDoProduto, valorPago) {
+      function calcularTroco(precoDoProduto, valorPago, estoque) {
         let diferenca = valorPago - precoDoProduto
         let troco = []
 
@@ -46,28 +46,35 @@
 
       // Teste 1: Deve retornar troco vazio quando o valor pago é igual ao preço
       test('Deve retornar [] quando o valor pago é igual ao preço', (assert) => {
-        const resultado = calcularTroco(10,10)
+        const resultado = calcularTroco(10,10,{100:0, 50:0, 20:0, 10:0, 5:0, 2:0, 1:0})
         assert.deepEqual(resultado, [])
       })
 
       // Teste 2: Primeiro calculo real de troco
       test('calcularTroco(215, 300) deve retornar [50, 20, 10, 5]', (assert) => {
-        const trocoCalculado = calcularTroco(215, 300) // Esperado um array contendo [50, 20, 10, 5]
+        const trocoCalculado = calcularTroco(215, 300,{100:0, 50:1, 20:1, 10:1, 5:1, 2:0, 1:0}) // Esperado um array contendo [50, 20, 10, 5]
         const trocoEsperado = [50, 20, 10, 5]
         assert.deepEqual(trocoCalculado, trocoEsperado)
       })
 
       // Teste 3: Segundo calculo real de troco
       test('calcularTroco(486, 600) deve retornar [100, 10, 2, 2]', (assert) => {
-        const trocoCalculado = calcularTroco(486, 600)
+        const trocoCalculado = calcularTroco(486, 600,{100:1, 50:0, 20:0, 10:1, 5:0, 2:2, 1:0})
         const trocoEsperado = [100, 10, 2, 2]
         assert.deepEqual(trocoCalculado, trocoEsperado)
       })
 
       // Teste 4: Terceiro calculo real de troco
       test('calcularTroco(12, 200) deve retornar [100, 50, 20, 10, 5, 2, 1]', (assert) => {
-        const trocoCalculado = calcularTroco(12, 200)
+        const trocoCalculado = calcularTroco(12, 200,{100:1, 50:1, 20:1, 10:1, 5:1, 2:1, 1:1})
         const trocoEsperado = [100, 50, 20, 10, 5, 2, 1]
+        assert.deepEqual(trocoCalculado, trocoEsperado)
+      })
+
+      // Teste 5: Quarto calculo real de troco testando do estoque de cédulas.
+      test('calcularTroco(120, 200) deve retornar [20, 20, 20, 20] pois não tem nenhuma nota de 50', (assert) => {
+        const trocoCalculado = calcularTroco(120, 200, {100: 1, 50: 0, 20: 5, 10: 10, 5: 0, 2: 0, 1: 0})
+        const trocoEsperado = [20, 20, 20, 20]
         assert.deepEqual(trocoCalculado, trocoEsperado)
       })
     </script>
